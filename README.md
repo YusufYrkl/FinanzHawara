@@ -1,8 +1,8 @@
-# React + Vite
+# FinanzHawara
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Anleitung:
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Das React Projekt mit git auf eigenen PC pullen
+2. Das Projekt in VSCode öffnen
+3. In VSCode unter Terminal -> New Terminal ein Terminal öffnen und "npm install" eingeben
+4. Um das Projekt auszuführen -> "npm run dev"
