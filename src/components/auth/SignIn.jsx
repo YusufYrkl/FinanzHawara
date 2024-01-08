@@ -1,38 +1,57 @@
 import React, { useState } from "react";
+import { auth } from "../../scenes/firebase.mjs";
+import {
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 
-function Signin() {
+function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Here you would typically handle the form submission, e.g., call your API
-    console.log(`Email: ${email}, Password: ${password}`);
+  const handleSignIn = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log("Signed in!");
+    } catch (error) {
+      console.error("Error signing in:", error.message);
+    }
+  };
+
+  const signInWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+      console.log("Google sign in successful!");
+    } catch (error) {
+      console.error("Error signing in with Google:", error.message);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Email:
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Password:
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </label>
-      <input type="submit" value="Sign In" />
-    </form>
+    <div>
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Email"
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+      />
+      <button onClick={handleSignIn}>Sign In</button>
+      <button onClick={signInWithGoogle}>Sign In with Google</button>
+      {/* ... (SignIn form fields) */}
+      <button onClick={handleSignIn}>Sign In</button>
+      <p>
+        Don't have an account? <a href="/signup">Sign Up</a>
+      </p>
+    </div>
   );
 }
 
-export default Signin;
+export default SignIn;
