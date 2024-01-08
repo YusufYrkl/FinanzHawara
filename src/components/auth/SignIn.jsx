@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { auth } from "../../scenes/firebase.mjs";
+import { auth } from "../../firebase/firebase.mjs";
 import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,

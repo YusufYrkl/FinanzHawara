@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { auth, db } from "../../scenes/firebase.mjs"; // Import db here
+import { auth, db } from "../../firebase/firebase.mjs";
 import { collection, addDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { doc, setDoc } from "firebase/firestore";
 
 function SignUp() {
   const [username, setUsername] = useState("");
@@ -31,17 +32,16 @@ function SignUp() {
       );
       const user = userCredential.user;
 
-      // Save additional details to Firestore
-      await addDoc(collection(db, "users"), {
-        uid: user.uid,
-        username: username,
-        email: email,
+      // Create a Firestore document for the user
+      await setDoc(doc(db, "users", username), {
+        balance: 0,
       });
 
       // Navigate to dashboard after successful sign up
       navigate("/dashboard");
     } catch (error) {
       console.error("Error signing up:", error);
+      alert(error.message);
     }
   };
 

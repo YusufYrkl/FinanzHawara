@@ -2,14 +2,13 @@ import { useState, useEffect } from "react";
 import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./scenes/firebase.mjs";
+import { auth } from "./firebase/firebase.mjs";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
 import SignIn from "./components/auth/SignIn.jsx";
 import SignUp from "./components/auth/SignUp.jsx";
 import Dashboard from "./scenes/dashboard";
-import Kontostand from "./scenes/dashboard";
-
+import Kontostand from "./scenes/kontostand";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 function App() {
@@ -32,25 +31,41 @@ function App() {
           className="App"
           style={{ display: "flex", flexDirection: "column", height: "100vh" }}
         >
-          {user && (
-            <div style={{ display: "flex", flexDirection: "row", flexGrow: 1 }}>
-              <Sidebar /> {/* Sidebar will take its natural width */}
+          {user ? (
+            // Render this part when user is logged in
+            <>
               <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  flexGrow: 1,
-                }}
+                style={{ display: "flex", flexDirection: "row", flexGrow: 1 }}
               >
-                <Topbar /> {/* Topbar will stretch to the remaining width */}
-                <main className="content" style={{ flexGrow: 1 }}>
-                  <Routes>
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="/Kontostand" element={<Kontostand />} />
-                  </Routes>
-                </main>
+                <Sidebar />
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    flexGrow: 1,
+                  }}
+                >
+                  <Topbar />
+                  <main className="content" style={{ flexGrow: 1 }}>
+                    <Routes>
+                      <Route path="/dashboard" element={<Dashboard />} />
+                      <Route path="/kontostand" element={<Kontostand />} />
+                      <Route
+                        path="*"
+                        element={<Navigate replace to="/dashboard" />}
+                      />
+                    </Routes>
+                  </main>
+                </div>
               </div>
-            </div>
+            </>
+          ) : (
+            // Render this part when no user is logged in
+            <Routes>
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="*" element={<Navigate replace to="/signin" />} />
+            </Routes>
           )}
         </div>
       </ThemeProvider>

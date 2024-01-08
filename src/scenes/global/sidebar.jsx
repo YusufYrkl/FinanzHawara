@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { tokens } from "../../theme";
-import profilePic from "../../assets/profile_pic.jpg"; // Adjust the path based on the location of the component file
+import profilePic from "../../assets/profile_pic.jpg";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
@@ -18,19 +19,25 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
   return (
     <MenuItem
       active={selected === title}
       style={{
         color: colors.grey[100],
+        display: "flex",
+        alignItems: "center",
       }}
-      onClick={() => setSelected(title)}
+      onClick={() => {
+        setSelected(title);
+        navigate(to); // Use navigate to change the route
+      }}
       icon={icon}
     >
       <Typography>{title}</Typography>
-      <Link to={to} />
     </MenuItem>
   );
 };
@@ -108,7 +115,7 @@ const CustomSidebar = () => {
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Dashboard"
-              to="/"
+              to="/dashboard" // Update the path
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -116,7 +123,7 @@ const CustomSidebar = () => {
 
             <Item
               title="Kontostand"
-              to="/"
+              to="/kontostand" // Update the path
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
