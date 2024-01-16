@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { auth, db } from "../../firebase/firebase.mjs";
-import { collection, addDoc } from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
   const [username, setUsername] = useState("");
@@ -11,16 +14,17 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const navigate = useNavigate(); // Move this line inside the component
+  const navigate = useNavigate();
 
   const handleSignUp = async () => {
+    // Überprüfen Sie die Passwortvalidierung
     if (password !== confirmPassword) {
-      alert("Passwords do not match!");
+      alert("Passwörter stimmen nicht überein!");
       return;
     }
 
     if (password.length < 6) {
-      alert("The password should be at least 6 characters long.");
+      alert("Das Passwort sollte mindestens 6 Zeichen lang sein.");
       return;
     }
 
@@ -32,19 +36,40 @@ function SignUp() {
       );
       const user = userCredential.user;
 
-      // Create a Firestore document for the user
-      await setDoc(doc(db, "users", username), {
+      // Speichern des Benutzernamens und der Balance unter der Benutzer-ID
+      await setDoc(doc(db, "users", user.uid), {
+        username: username, // Benutzername aus dem Anmeldeformular
         balance: 0,
       });
 
-      // Navigate to dashboard after successful sign up
       navigate("/dashboard");
     } catch (error) {
-      console.error("Error signing up:", error);
+      console.error("Fehler bei der Anmeldung:", error);
       alert(error.message);
     }
   };
 
+  const handleSignUpWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const userCredential = await signInWithPopup(auth, provider);
+      const user = userCredential.user;
+
+      // Extrahieren Sie den Benutzernamen aus der E-Mail
+      const googleUsername = user.email.split("@")[0];
+
+      // Speichern des Benutzernamens (aus der Google E-Mail) und der Balance
+      await setDoc(doc(db, "users", user.uid), {
+        username: googleUsername, // Benutzername aus der Google E-Mail
+        balance: 0,
+      });
+
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Fehler bei der Anmeldung mit Google:", error);
+      alert(error.message);
+    }
+  };
   return (
     <div>
       <input
