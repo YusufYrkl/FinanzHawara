@@ -1,4 +1,15 @@
+
 import React, { useState } from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import GoogleIcon from '@mui/icons-material/Google';
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { auth } from "../../firebase/firebase.mjs";
 import {
   signInWithEmailAndPassword,
@@ -6,16 +17,21 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 
+const defaultTheme = createTheme();
+
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSignIn = async () => {
+  const handleSignIn = async (e) => {
+    e.preventDefault(); 
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log("Signed in!");
     } catch (error) {
       console.error("Error signing in:", error.message);
+      window.alert("Invalid username or password");
     }
   };
 
@@ -49,27 +65,86 @@ function SignIn() {
   };
 
   return (
-    <div>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-      />
-      {/* ... (SignIn form fields) */}
-      <button onClick={handleSignIn}>Sign In</button>
-      <button onClick={signInWithGoogle}>Sign In with Google</button>
-
-      <p>
-        Don't have an account? <a href="/signup">Sign Up</a>
-      </p>
-    </div>
+     <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs" align="center">
+      
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <AccountBalanceIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <Box component="form" onSubmit={handleSignIn} noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In
+            </Button>
+            
+              <Button
+                variant="contained"
+                fullWidth
+                startIcon={<GoogleIcon />}
+                onClick={signInWithGoogle}
+                sx={{ mt: 0.5, mb: 2 }}
+              >
+                Sign in with Google instead?
+              </Button>
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={(e) =>{
+                  e.preventDefault();
+                  window.location.href="http://localhost:5173/signup"
+                }}
+                sx={{ mt: 0.5, mb: 2 }}
+              >
+                Don't have an account? Sign Up
+              </Button>
+              
+          </Box>
+        </Box>
+        
+      Copyright © FinanzHawara 2024
+      </Container>
+     </ThemeProvider>
   );
 }
 
