@@ -40,6 +40,8 @@ function SignUp() {
       await setDoc(doc(db, "users", user.uid), {
         username: username, // Benutzername aus dem Anmeldeformular
         balance: 0,
+        einnahmen: {},
+        ausgaben:{},
       });
 
       navigate("/dashboard");

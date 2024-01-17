@@ -130,16 +130,8 @@ const CustomSidebar = () => {
             />
 
             <Item
-              title="Einnahmen"
-              to="/"
-              icon={<HomeOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-
-            <Item
-              title="Ausgaben"
-              to="/"
+              title="Einnahmen/Ausgaben"
+              to="/einnahmen_ausgaben"
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
