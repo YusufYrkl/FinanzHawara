@@ -81,7 +81,7 @@ function SignIn() {
             <AccountBalanceIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Login
           </Typography>
           <Box component="form" onSubmit={handleSignIn} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -89,7 +89,7 @@ function SignIn() {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Email Addresse"
               name="email"
               autoComplete="email"
               autoFocus
@@ -101,7 +101,7 @@ function SignIn() {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="Passwort"
               type="password"
               id="password"
               autoComplete="current-password"
@@ -115,7 +115,7 @@ function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Anmelden
             </Button>
             
               <Button
@@ -125,7 +125,7 @@ function SignIn() {
                 onClick={signInWithGoogle}
                 sx={{ mt: 0.5, mb: 2 }}
               >
-                Sign in with Google instead?
+                Stattdessen mit Google anmelden?
               </Button>
               <Button
                 variant="contained"
@@ -136,7 +136,7 @@ function SignIn() {
                 }}
                 sx={{ mt: 0.5, mb: 2 }}
               >
-                Don't have an account? Sign Up
+                Du hast noch kein Konto? Registriere dich!
               </Button>
               
           </Box>
