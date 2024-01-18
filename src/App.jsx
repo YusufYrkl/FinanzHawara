@@ -9,6 +9,7 @@ import SignIn from "./components/auth/SignIn.jsx";
 import SignUp from "./components/auth/SignUp.jsx";
 import Dashboard from "./scenes/dashboard";
 import Kontostand from "./scenes/kontostand";
+import EinnahmenAusgaben from "./scenes/einnahmen_ausgaben";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
                     <Routes>
                       <Route path="/dashboard" element={<Dashboard />} />
                       <Route path="/kontostand" element={<Kontostand />} />
+                      <Route path="/einnahmen_ausgaben" element={<EinnahmenAusgaben />} />
                       <Route
                         path="*"
                         element={<Navigate replace to="/dashboard" />}
