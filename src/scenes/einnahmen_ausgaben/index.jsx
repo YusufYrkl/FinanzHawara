@@ -5,7 +5,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc, Timestamp } from "firebase/firestore";
 import { auth, db } from "../../firebase/firebase.mjs";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -55,6 +55,38 @@ const inputStyles = {
 
 const EinnahmenAusgaben = () => {
 
+  const [user] = useAuthState(auth);
+  const userDocRef = doc(db, "users", user.uid);
+
+  const handleSaveClick = () => {
+      if (user) {
+        const fieldName = 'einnahmen';
+  
+        // The new entry you want to add to the map
+        const id = Timestamp.now().seconds;
+        const newEntry = {
+          "id": id,
+          "beschreibung": formData.beschreibung,
+          "betrag": formData.betrag,
+          "kategorie": formData.kategorie
+        };
+  
+        // Update the document with the new entry in the map
+        updateDoc(userDocRef, {
+          [`${fieldName}.${newEntry.id}`]: newEntry,
+        })
+        .then(() => {
+          console.log('Document successfully updated with new entry in the map!');
+        })
+        .catch((error) => {
+          console.error('Error updating document:', error);
+        });
+      }
+    
+    setShowInputs(false);
+    console.log('Form Data:', formData);
+  };
+
   const [showInputs, setShowInputs] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -62,11 +94,6 @@ const EinnahmenAusgaben = () => {
     betrag: '',
     kategorie: '',
   });
-
-  const handleSaveClick = () => {
-    // Process or save the data as needed
-    console.log('Form Data:', formData);
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
