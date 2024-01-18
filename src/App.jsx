@@ -4,7 +4,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/firebase.mjs";
 import Topbar from "./scenes/global/Topbar";
-import Sidebar from "./scenes/global/sidebar";
+import Sidebar from "./scenes/global/Sidebar";
 import SignIn from "./components/auth/SignIn.jsx";
 import SignUp from "./components/auth/SignUp.jsx";
 import Dashboard from "./scenes/dashboard";
