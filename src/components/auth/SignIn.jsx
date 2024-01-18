@@ -41,26 +41,26 @@ function SignIn() {
       const userCredential = await signInWithPopup(auth, provider);
       const user = userCredential.user;
 
-      // Extrahieren Sie den Benutzernamen aus der E-Mail
+      // Extract the username from the email
       const googleUsername = user.email.split("@")[0];
 
       const userDocRef = doc(db, "users", user.uid);
       const userDoc = await getDoc(userDocRef);
 
-      // Überprüfen Sie, ob ein Dokument für den Benutzer existiert
+      // Check if a document for the user exists
       if (!userDoc.exists()) {
-        // Erstellen Sie ein neues Dokument, wenn es noch nicht existiert
+        // Create a new document if it does not exist
         await setDoc(userDocRef, {
           username: googleUsername,
           balance: 0,
         });
       }
 
-      // Weiterleitung oder zusätzliche Aktionen nach der Anmeldung
+      // Redirect or additional actions after signing in
       console.log("Google sign in successful!");
     } catch (error) {
       console.error("Error signing in with Google:", error.message);
-      alert(error.message);
+      //alert(error.message);
     }
   };
 

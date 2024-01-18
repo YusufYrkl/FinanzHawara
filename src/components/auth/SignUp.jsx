@@ -29,7 +29,7 @@ function SignUp() {
   const navigate = useNavigate();
 
   const handleSignUp = async () => {
-    // Überprüfen Sie die Passwortvalidierung
+    // Check password validation
     if (password !== confirmPassword) {
       alert("Passwörter stimmen nicht überein!");
       return;
@@ -48,7 +48,7 @@ function SignUp() {
       );
       const user = userCredential.user;
 
-      // Speichern des Benutzernamens und der Balance unter der Benutzer-ID
+      // Save the username and balance under the user's ID
       await setDoc(doc(db, "users", user.uid), {
         username: username, // Benutzername aus dem Anmeldeformular
         balance: 0,
@@ -67,12 +67,12 @@ function SignUp() {
       const userCredential = await signInWithPopup(auth, provider);
       const user = userCredential.user;
 
-      // Extrahieren Sie den Benutzernamen aus der E-Mail
+      // Extract the username from the email
       const googleUsername = user.email.split("@")[0];
 
-      // Speichern des Benutzernamens (aus der Google E-Mail) und der Balance
+      // Save the username (from the Google email) and balanc
       await setDoc(doc(db, "users", user.uid), {
-        username: googleUsername, // Benutzername aus der Google E-Mail
+        username: googleUsername, // Username from the Google email
         balance: 0,
       });
 
