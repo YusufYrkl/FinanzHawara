@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 import { doc, getDoc, setDoc, updateDoc, Timestamp } from "firebase/firestore";
 import { auth, db } from "../../firebase/firebase.mjs";
 import { useAuthState } from "react-firebase-hooks/auth";
+import KategorieSelect from "./kategorieSelectItem";
 
 const plusButtonStyles = {
     borderRadius: '8px',
@@ -115,6 +116,14 @@ const EinnahmenAusgaben = () => {
     }));
   };
 
+  const handleSelectionChange = (selectedKategorie) => {
+    setFormData({
+      ...formData,
+      kategorie: selectedKategorie,
+    });
+    console.log(selectedKategorie);
+  };
+
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -135,7 +144,7 @@ const EinnahmenAusgaben = () => {
                     <Grid container alignItems="center" spacing={5}>
                         <Grid item><TextField name="beschreibung" label="Beschreibung" variant="outlined" sx={inputStyles} onChange={handleInputChange}/></Grid>
                         <Grid item><TextField name="betrag" label="Betrag" variant="outlined" sx={inputStyles} onChange={handleInputChange} /></Grid>
-                        <Grid item><TextField name="kategorie" label="Kategorie" variant="outlined" sx={inputStyles} onChange={handleInputChange} /></Grid>
+                        <Grid item><KategorieSelect onSelectionChange={handleSelectionChange} /></Grid>
                         <Grid item>
                             <Button variant="contained" sx={saveButtonStyles} onClick={() => handleSaveClick(1)}>
                                 Speichern
@@ -183,5 +192,5 @@ const EinnahmenAusgaben = () => {
     </Box>
   );
 };
-
+//<TextField name="kategorie" label="Kategorie" variant="outlined" sx={inputStyles} onChange={handleInputChange} />
 export default EinnahmenAusgaben;
