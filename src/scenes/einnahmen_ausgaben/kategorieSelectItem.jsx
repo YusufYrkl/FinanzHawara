@@ -31,7 +31,6 @@ const KategorieSelect = ({onSelectionChange}) => {
             label="kategorie"
             value={selectedValue}
             onChange={handleChange}
-            style={{ color: 'white' }}
         >
             <MenuItem value={"Haushalt"}>Haushalt</MenuItem>
             <MenuItem value={"Privat"}>Privat</MenuItem>
