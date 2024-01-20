@@ -9,6 +9,7 @@ import { doc, getDoc, setDoc, updateDoc, Timestamp } from "firebase/firestore";
 import { auth, db } from "../../firebase/firebase.mjs";
 import { useAuthState } from "react-firebase-hooks/auth";
 import KategorieSelect from "./kategorieSelectItem";
+import Uebersicht from "./uebersicht";
 
 const plusButtonStyles = {
     borderRadius: '8px',
@@ -189,6 +190,7 @@ const EinnahmenAusgaben = () => {
             </Grid>
         </Grid>
       </Box>
+      <Uebersicht/>
     </Box>
   );
 };
