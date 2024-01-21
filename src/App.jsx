@@ -12,7 +12,7 @@ import Kontostand from "./scenes/kontostand";
 import EinnahmenAusgaben from "./scenes/einnahmen_ausgaben";
 import SupportPage from "./scenes/supportpage";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { Support } from "@mui/icons-material";
+import Kategorien from "./scenes/Kategorien/index.jsx";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -55,6 +55,7 @@ function App() {
                       <Route path="/kontostand" element={<Kontostand />} />
                       <Route path="/einnahmen_ausgaben" element={<EinnahmenAusgaben />} />
                       <Route path="/support" element={<SupportPage />} />
+                      <Route path="/Kategorien" element={<Kategorien />} />
                       <Route
                         path="*"
                         element={<Navigate replace to="/dashboard" />}

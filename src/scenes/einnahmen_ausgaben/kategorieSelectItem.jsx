@@ -4,7 +4,10 @@ import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { useState } from 'react';
+import { getKategorien } from '../Kategorien/getKategorien';
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firebase/firebase.mjs";
+import { useState, useEffect } from 'react';
 
 const customformcontrol ={
     width: '300px',
@@ -15,6 +18,17 @@ const customformcontrol ={
 
 
 const KategorieSelect = ({onSelectionChange}) => {
+
+    const [user] = useAuthState(auth);
+    const [kategorien, setKategorien] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await getKategorien(user, setKategorien);
+        };
+
+        fetchData();
+    }, [user]);
 
     const [selectedValue, setSelectedValue] = useState('');
 
@@ -32,9 +46,9 @@ const KategorieSelect = ({onSelectionChange}) => {
             value={selectedValue}
             onChange={handleChange}
         >
-            <MenuItem value={"Haushalt"}>Haushalt</MenuItem>
-            <MenuItem value={"Privat"}>Privat</MenuItem>
-            <MenuItem value={"Reisen"}>Reisen</MenuItem>
+            {kategorien.map(kategorie => (
+                <MenuItem value={kategorie} key={kategorie}>{kategorie}</MenuItem>
+            ))}
         </Select>
     </FormControl>
   );

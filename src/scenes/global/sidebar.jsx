@@ -21,6 +21,7 @@ import IsoIcon from '@mui/icons-material/Iso';
 import SavingsIcon from '@mui/icons-material/Savings';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import CategoryIcon from '@mui/icons-material/Category';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const navigate = useNavigate();
@@ -155,6 +156,14 @@ const CustomSidebar = () => {
               title="Support"
               to="/support"
               icon={<SupportAgentIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+
+            <Item
+              title="Kategorien"
+              to="/Kategorien"
+              icon={<CategoryIcon />}
               selected={selected}
               setSelected={setSelected}
             />

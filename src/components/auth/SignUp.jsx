@@ -54,6 +54,7 @@ function SignUp() {
         balance: 0,
         einnahmen: {},
         ausgaben:{},
+        kategorien:[],
       });
 
       navigate("/dashboard");
