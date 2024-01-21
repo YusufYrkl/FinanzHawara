@@ -3,13 +3,15 @@ import Header from "../../components/Header/Header";
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import { doc, getDoc, setDoc, updateDoc, Timestamp } from "firebase/firestore";
 import { auth, db } from "../../firebase/firebase.mjs";
 import { useAuthState } from "react-firebase-hooks/auth";
 import KategorieSelect from "./kategorieSelectItem";
 import Uebersicht from "./uebersicht";
+import { getKontostand } from "./getKontostand";
+import { data } from "autoprefixer";
 
 const plusButtonStyles = {
     borderRadius: '8px',
@@ -69,8 +71,17 @@ const EinnahmenAusgaben = () => {
 
   const [user] = useAuthState(auth);
   const userDocRef = doc(db, "users", user.uid);
+  const [kontostand, setKontostand] = useState(0);
 
-  const handleSaveClick = (i) => {
+    useEffect(() => {
+        const fetchData = async () => {
+            await getKontostand(user, setKontostand);
+        };
+
+        fetchData();
+    }, [kontostand]);
+
+  const handleSaveClick = async (i) => {
 
       if (user) {
         const fieldName = i == 1 ? 'einnahmen' : 'ausgaben';
@@ -87,6 +98,7 @@ const EinnahmenAusgaben = () => {
         // Update the document with the new entry in the map
         updateDoc(userDocRef, {
           [`${fieldName}.${newEntry.id}`]: newEntry,
+          balance: i == 1 ? kontostand + Number(formData.betrag) : kontostand - Number(formData.betrag),
         })
         .then(() => {
           console.log('Document successfully updated with new entry in the map!');
@@ -97,7 +109,6 @@ const EinnahmenAusgaben = () => {
       }
     
     i == 1 ? setShowInputsPlus(false) : setShowInputsMinus(false);
-    console.log('Form Data:', formData);
   };
 
   const [showInputsPlus, setShowInputsPlus] = useState(false);
@@ -122,7 +133,6 @@ const EinnahmenAusgaben = () => {
       ...formData,
       kategorie: selectedKategorie,
     });
-    console.log(selectedKategorie);
   };
 
   return (

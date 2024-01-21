@@ -7,6 +7,7 @@ import { getEinnahmenAusgaben } from './getEinnahmenAusgaben';
 import { doc, updateDoc, deleteField, getDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase/firebase.mjs";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { getKontostand } from './getKontostand';
 
 const textStyles = {
     fontSize: '22px',
@@ -63,36 +64,47 @@ const deleteButtonStylesAusgabe = {
       },
 };
 
-const deleteEntry = (user, field, id) => {
-    const userDocRef = doc(db, "users", user.uid);  
-
-    if (user) {
-      const fieldName = field;
-      
-      updateDoc(userDocRef, {
-        [`${fieldName}.${id}`]: deleteField()
-      })
-      .then(() => {
-        console.log('Document successfully updated with new entry in the map!');
-      })
-      .catch((error) => {
-        console.error('Error updating document:', error);
-      });
-    }
-};
-
 
 const Uebersicht = () => {
     const [user] = useAuthState(auth);
     const [data, setData] = useState({ einnahmen: {}, ausgaben: {} });
+    const [kontostand, setKontostand] = useState(0);
 
     useEffect(() => {
         const fetchData = async () => {
-        await getEinnahmenAusgaben(user, setData);
+            await getKontostand(user, setKontostand);
+            console.log(kontostand)
+        };
+
+        fetchData();
+    }, [kontostand]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await getEinnahmenAusgaben(user, setData);
         };
 
         fetchData();
     }, [user]);
+
+    const deleteEntry = (user, field, id, betrag) => {
+        const userDocRef = doc(db, "users", user.uid); 
+    
+        if (user) {
+          const fieldName = field;
+          
+          updateDoc(userDocRef, {
+            [`${fieldName}.${id}`]: deleteField(),
+            balance: (kontostand - betrag),
+          })
+          .then(() => {
+            console.log('Document successfully updated with new entry in the map!');
+          })
+          .catch((error) => {
+            console.error('Error updating document:', error);
+          });
+        }
+    };
 
     let kombiniert = { ...data.einnahmen, ...data.ausgaben };
 
@@ -116,7 +128,7 @@ const Uebersicht = () => {
                     <Typography sx={textStyles}>{value.beschreibung}</Typography>
                     <Typography sx={textStyles}>{value.kategorie}</Typography>
                     <Typography sx={textStyles}>{value.betrag}€</Typography>
-                    <IconButton onClick={() => deleteEntry(user, "einnahmen", key)} style={deleteButtonStylesEinnahme} aria-label="delete">
+                    <IconButton onClick={() => deleteEntry(user, "einnahmen", key, Number(value.betrag))} style={deleteButtonStylesEinnahme} aria-label="delete">
                         <DeleteIcon />
                     </IconButton>
                 </Box>
@@ -125,7 +137,7 @@ const Uebersicht = () => {
                     <Typography sx={textStyles}>{value.beschreibung}</Typography>
                     <Typography sx={textStyles}>{value.kategorie}</Typography>
                     <Typography sx={textStyles}>-{value.betrag}€</Typography>
-                    <IconButton onClick={() => deleteEntry(user, "ausgaben", key)} style={deleteButtonStylesAusgabe} aria-label="delete">
+                    <IconButton onClick={() => deleteEntry(user, "ausgaben", key, (Number(value.betrag) * (-1)))} style={deleteButtonStylesAusgabe} aria-label="delete">
                         <DeleteIcon />
                     </IconButton>
                 </Box>
