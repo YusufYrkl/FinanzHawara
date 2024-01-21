@@ -15,7 +15,11 @@ import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
+import BalanceIcon from '@mui/icons-material/Balance';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import IsoIcon from '@mui/icons-material/Iso';
+import SavingsIcon from '@mui/icons-material/Savings';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -68,7 +72,7 @@ const CustomSidebar = () => {
         },
       }}
     >
-      <Sidebar collapsed={isCollapsed} style={{ height: "100vh" }}>
+      <Sidebar collapsed={isCollapsed} style={{ height: "125vh" }}>
         <Menu iconShape="square">
           {/* LOGO AND MENU ICON */}
           <MenuItem
@@ -124,7 +128,7 @@ const CustomSidebar = () => {
             <Item
               title="Kontostand"
               to="/kontostand" // Update the path
-              icon={<HomeOutlinedIcon />}
+              icon={<BalanceIcon />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -132,7 +136,7 @@ const CustomSidebar = () => {
             <Item
               title="Einnahmen/Ausgaben"
               to="/einnahmen_ausgaben"
-              icon={<HomeOutlinedIcon />}
+              icon={<IsoIcon />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -140,23 +144,17 @@ const CustomSidebar = () => {
             <Item
               title="Sparpläne"
               to="/"
-              icon={<HomeOutlinedIcon />}
+              icon={<SavingsIcon />}
               selected={selected}
               setSelected={setSelected}
             />
 
-            <Item
-              title="Einstellungen"
-              to="/"
-              icon={<HomeOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            
 
             <Item
               title="Support"
-              to="/"
-              icon={<HomeOutlinedIcon />}
+              to="/support"
+              icon={<SupportAgentIcon />}
               selected={selected}
               setSelected={setSelected}
             />

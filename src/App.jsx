@@ -10,7 +10,9 @@ import SignUp from "./components/auth/SignUp.jsx";
 import Dashboard from "./scenes/dashboard";
 import Kontostand from "./scenes/kontostand";
 import EinnahmenAusgaben from "./scenes/einnahmen_ausgaben";
+import SupportPage from "./scenes/supportpage";
 import { Routes, Route, Navigate } from "react-router-dom";
+import { Support } from "@mui/icons-material";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -52,6 +54,7 @@ function App() {
                       <Route path="/dashboard" element={<Dashboard />} />
                       <Route path="/kontostand" element={<Kontostand />} />
                       <Route path="/einnahmen_ausgaben" element={<EinnahmenAusgaben />} />
+                      <Route path="/support" element={<SupportPage />} />
                       <Route
                         path="*"
                         element={<Navigate replace to="/dashboard" />}
