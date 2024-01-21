@@ -2,12 +2,16 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Box';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Header from "../../components/Header/Header";
 import { doc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase/firebase.mjs";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useState, useEffect } from 'react';
 import { getKategorien } from './getKategorien';
+import { Grid, IconButton } from '@mui/material';
+import { Label } from '@mui/icons-material';
 
 const Kategorien = () => {
     const [user] = useAuthState(auth);
@@ -27,6 +31,28 @@ const Kategorien = () => {
 
   const handleAddCategoryClick = () => {
     setShowForm(true);
+  };
+
+  const textStyles = {
+    fontSize: '22px',
+    fontWeight: 'bold',
+    marginLeft: '10px',
+  };
+
+  const mainContainerStyles = {
+    bgcolor: 'white',
+    p: 1,
+    marginTop: 2,
+    border: 2,
+    borderColor: 'lightblue',
+    borderRadius: 1,
+  };
+
+  const deleteButtonStylesAusgabe = {
+    color: 'black',
+    '&:hover': {
+        cursor: 'pointer',
+      },
   };
 
   const handleSaveClick = () => {
@@ -81,6 +107,17 @@ const Kategorien = () => {
           </Button>
         </Paper>
       )}
+
+        <Box {...mainContainerStyles} display={'flex'} alignItems={'center'} justifyContent={'space-around'}>
+            <Typography sx={textStyles} color={'black'} >kategorien</Typography>
+        </Box>
+        <Box {...mainContainerStyles} display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
+            <Typography sx={textStyles} color={'black'}>HardCodedKategorie</Typography>
+            <IconButton style={deleteButtonStylesAusgabe}>
+              <DeleteIcon/>
+            </IconButton>
+        </Box>
+
     </Box>
   );
 };

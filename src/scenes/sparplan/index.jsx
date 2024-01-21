@@ -23,7 +23,7 @@ const Sparplan = () => {
                 <Header title="SPARPLAN" subtitle="Erstelle einen Sparplan!" />
             </Box>
             <Button variant="contained" color="primary" onClick={handleClick}>
-                Kategorie hinzufügen
+                Sparplan hinzufügen
             </Button>
             <Menu
                 anchorEl={anchorEl}
@@ -32,7 +32,14 @@ const Sparplan = () => {
             >
                 <MenuItem>
                     <TextField
-                        label="Neue Kategorie"
+                        label="Neuer Sparplan"
+                        variant="outlined"
+                    //onChange={(e) => setNewCategory(e.target.value)}
+                    />
+                </MenuItem>
+                <MenuItem>
+                    <TextField
+                        label="Betrag in €"
                         variant="outlined"
                     //onChange={(e) => setNewCategory(e.target.value)}
                     />
