@@ -165,7 +165,7 @@ function SignUp() {
             fullWidth
             onClick={(e) => {
               //e.preventDefault();
-              window.location.href = "http://localhost:5173/signin"
+              navigate("/signin");
             }}
             sx={{ mt: 0.5, mb: 2 }}
           >

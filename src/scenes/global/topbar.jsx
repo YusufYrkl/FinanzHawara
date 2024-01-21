@@ -8,11 +8,26 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
+import { auth } from "../../firebase/firebase.mjs";
+import {
+    signOut
+} from "firebase/auth";
+
 
 const Topbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
+  //const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      console.log("Signed out!");
+      await signOut(auth);
+    } catch (error) {
+      console.error("Error signing out:", error.message);
+    }
+  };
 
   return (
     <Box display="flex" justifyContent="space-between" p={2}>
@@ -43,8 +58,8 @@ const Topbar = () => {
         <IconButton>
           <SettingsOutlinedIcon />
         </IconButton>
-        <IconButton>
-          <PersonOutlinedIcon />
+        <IconButton onClick={handleLogout}>
+          <PersonOutlinedIcon/>
         </IconButton>
       </Box>
     </Box>
