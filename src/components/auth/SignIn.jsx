@@ -16,12 +16,14 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSignIn = async (e) => {
     e.preventDefault(); 
@@ -63,6 +65,7 @@ function SignIn() {
       //alert(error.message);
     }
   };
+
 
   return (
      <ThemeProvider theme={defaultTheme}>
@@ -132,7 +135,7 @@ function SignIn() {
                 fullWidth
                 onClick={(e) =>{
                   e.preventDefault();
-                  window.location.href="http://localhost:5173/signup"
+                  navigate("/signup");
                 }}
                 sx={{ mt: 0.5, mb: 2 }}
               >
