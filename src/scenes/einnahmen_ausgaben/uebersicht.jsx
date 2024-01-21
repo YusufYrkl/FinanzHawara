@@ -2,9 +2,9 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import { Box, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getEinnahmenAusgaben } from './getEinnahmenAusgaben';
-import { doc, updateDoc, deleteField } from "firebase/firestore";
+import { doc, updateDoc, deleteField, getDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase/firebase.mjs";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -84,16 +84,20 @@ const deleteEntry = (user, field, id) => {
 
 const Uebersicht = () => {
     const [user] = useAuthState(auth);
+    const [data, setData] = useState({ einnahmen: {}, ausgaben: {} });
 
-    const {einnahmen, ausgaben} = getEinnahmenAusgaben();
+    useEffect(() => {
+        const fetchData = async () => {
+        await getEinnahmenAusgaben(user, setData);
+        };
 
-    // Kombinieren Sie die beiden Objekte
-    let kombiniert = { ...einnahmen, ...ausgaben };
+        fetchData();
+    }, [user]);
 
-    // Extrahieren Sie die IDs und sortieren Sie sie
+    let kombiniert = { ...data.einnahmen, ...data.ausgaben };
+
     let sortierteIDs = Object.keys(kombiniert).map(Number).sort((a, b) => a - b);
 
-    // Erstellen Sie ein neues sortiertes Objekt
     let sortiertesObjekt = {};
     for (let id of sortierteIDs) {
         sortiertesObjekt[id] = kombiniert[id];
@@ -107,8 +111,7 @@ const Uebersicht = () => {
             <Typography sx={textStyles} color={'black'}>Betrag</Typography>
         </Box>
         {Object.entries(sortiertesObjekt).map(([key, value]) => (
-            //{einnahmen.hasOwnProperty(key) ? (console.log("einnahme")): (console.log("ausgabe"))}
-            einnahmen.hasOwnProperty(key) ? (
+            data.einnahmen.hasOwnProperty(key) ? (
                 <Box {...einnahmeBoxStyles} key={key}>
                     <Typography sx={textStyles}>{value.beschreibung}</Typography>
                     <Typography sx={textStyles}>{value.kategorie}</Typography>
@@ -127,14 +130,6 @@ const Uebersicht = () => {
                     </IconButton>
                 </Box>
             )
-            /*<Box {...einnahmeBoxStyles} key={key}>
-                <Typography sx={textStyles}>{value.beschreibung}</Typography>
-                <Typography sx={textStyles}>{value.kategorie}</Typography>
-                <Typography sx={textStyles}>{value.betrag}€</Typography>
-                <IconButton style={deleteButtonStyles} aria-label="delete">
-                    <DeleteIcon />
-                </IconButton>
-            </Box>*/
         ))}   
     </Box>
   );

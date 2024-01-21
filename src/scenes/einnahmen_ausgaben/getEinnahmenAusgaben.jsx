@@ -1,30 +1,34 @@
-import { Box } from "@mui/material";
-import Header from "../../components/Header/Header";
-import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from "../../firebase/firebase.mjs";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { db } from "../../firebase/firebase.mjs";
 
+export async function getEinnahmenAusgaben(user, setData) {
+  try {
+    if (user) {
+      const userDocRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(userDocRef);
 
-export function getEinnahmenAusgaben(){
-    const [einnahmen, setEinnahmen] = useState({});
-    const [ausgaben, setAusgaben] = useState({});
-    const [user] = useAuthState(auth);
-    if(user){
-        const userDocRef = doc(db, "users", user.uid);
-        getDoc(userDocRef)
-        .then((docSnap) => {
-          if (docSnap.exists()) {
-            setEinnahmen(docSnap.data().einnahmen);
-            setAusgaben(docSnap.data().ausgaben);
-          } else {
-            console.log("No such document!");
+      if (docSnap.exists()) {
+        const einnahmen = docSnap.data().einnahmen;
+        const ausgaben = docSnap.data().ausgaben;
+        setData({ einnahmen, ausgaben });
+
+        const unsubscribe = onSnapshot(userDocRef, (doc) => {
+          if (doc.exists()) {
+            const updatedEinnahmen = doc.data().einnahmen;
+            const updatedAusgaben = doc.data().ausgaben;
+            setData({ einnahmen: updatedEinnahmen, ausgaben: updatedAusgaben });
           }
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error);
         });
-    }
-    return {einnahmen, ausgaben};
-}
 
+        return () => unsubscribe();
+      } else {
+        console.log("No such document!");
+        setData({ einnahmen: {}, ausgaben: {} });
+      }
+    } else {
+      setData({ einnahmen: {}, ausgaben: {} });
+    }
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+  }
+}
