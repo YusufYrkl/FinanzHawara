@@ -30,7 +30,7 @@ const Kontostand = () => {
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="KONTOSTAND" subtitle={`Dein Guthaben: ${balance}`} />
+        <Header title="KONTOSTAND" subtitle={`Dein Guthaben: ${balance}€`} />
       </Box>
     </Box>
   );

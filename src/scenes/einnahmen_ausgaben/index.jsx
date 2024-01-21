@@ -128,12 +128,12 @@ const EinnahmenAusgaben = () => {
     }));
   };
 
-  const handleSelectionChange = (selectedKategorie) => {
+  /*const handleSelectionChange = (selectedKategorie) => {
     setFormData({
       ...formData,
       kategorie: selectedKategorie,
     });
-  };
+  };*/
 
   return (
     <Box m="20px">
@@ -155,7 +155,7 @@ const EinnahmenAusgaben = () => {
                     <Grid container alignItems="center" spacing={5}>
                         <Grid item><TextField name="beschreibung" label="Beschreibung" variant="outlined" sx={inputStyles} onChange={handleInputChange}/></Grid>
                         <Grid item><TextField name="betrag" label="Betrag" variant="outlined" sx={inputStyles} onChange={handleInputChange} /></Grid>
-                        <Grid item><KategorieSelect onSelectionChange={handleSelectionChange} /></Grid>
+                        <Grid item><TextField name="kategorie" label="Kategorie" variant="outlined" sx={inputStyles} onChange={handleInputChange} /></Grid>
                         <Grid item>
                             <Button variant="contained" sx={saveButtonStyles} onClick={() => handleSaveClick(1)}>
                                 Speichern
@@ -184,7 +184,7 @@ const EinnahmenAusgaben = () => {
                     <Grid container alignItems="center" spacing={5}>
                         <Grid item><TextField name="beschreibung" label="Beschreibung" variant="outlined" sx={inputStyles} onChange={handleInputChange}/></Grid>
                         <Grid item><TextField name="betrag" label="Betrag" variant="outlined" sx={inputStyles} onChange={handleInputChange} /></Grid>
-                        <Grid item><KategorieSelect onSelectionChange={handleSelectionChange} /></Grid>
+                        <Grid item><TextField name="kategorie" label="Kategorie" variant="outlined" sx={inputStyles} onChange={handleInputChange} /></Grid>
                         <Grid item>
                             <Button variant="contained" sx={saveButtonStyles} onClick={() => handleSaveClick(0)}>
                                 Speichern
