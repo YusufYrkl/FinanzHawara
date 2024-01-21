@@ -144,18 +144,8 @@ const CustomSidebar = () => {
 
             <Item
               title="Sparpläne"
-              to="/"
+              to="/sparplan"
               icon={<SavingsIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-
-            
-
-            <Item
-              title="Support"
-              to="/support"
-              icon={<SupportAgentIcon />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -167,6 +157,16 @@ const CustomSidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+
+            <Item
+              title="Support"
+              to="/support"
+              icon={<SupportAgentIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+
+            
           </Box>
         </Menu>
       </Sidebar>

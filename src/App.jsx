@@ -13,6 +13,7 @@ import EinnahmenAusgaben from "./scenes/einnahmen_ausgaben";
 import SupportPage from "./scenes/supportpage";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Kategorien from "./scenes/Kategorien/index.jsx";
+import Sparplan from "./scenes/sparplan";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -56,6 +57,7 @@ function App() {
                       <Route path="/einnahmen_ausgaben" element={<EinnahmenAusgaben />} />
                       <Route path="/support" element={<SupportPage />} />
                       <Route path="/Kategorien" element={<Kategorien />} />
+                      <Route path="/sparplan" element={<Sparplan />} />
                       <Route
                         path="*"
                         element={<Navigate replace to="/dashboard" />}
