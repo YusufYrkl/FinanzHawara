@@ -13,6 +13,31 @@ import { getKategorien } from './getKategorien';
 import { Grid, IconButton } from '@mui/material';
 import { Label } from '@mui/icons-material';
 
+const textStyles = {
+    fontSize: '22px',
+    fontWeight: 'bold',
+    marginLeft: '10px',
+  };
+
+  const mainContainerStyles = {
+    bgcolor: 'white',
+    p: 1,
+    marginTop: 2,
+    border: 2,
+    borderColor: 'lightblue',
+    borderRadius: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  };
+
+  const deleteButtonStylesAusgabe = {
+    color: 'black',
+    '&:hover': {
+        cursor: 'pointer',
+      },
+  };
+
 const Kategorien = () => {
     const [user] = useAuthState(auth);
     const userDocRef = doc(db, "users", user.uid);
@@ -31,28 +56,6 @@ const Kategorien = () => {
 
   const handleAddCategoryClick = () => {
     setShowForm(true);
-  };
-
-  const textStyles = {
-    fontSize: '22px',
-    fontWeight: 'bold',
-    marginLeft: '10px',
-  };
-
-  const mainContainerStyles = {
-    bgcolor: 'white',
-    p: 1,
-    marginTop: 2,
-    border: 2,
-    borderColor: 'lightblue',
-    borderRadius: 1,
-  };
-
-  const deleteButtonStylesAusgabe = {
-    color: 'black',
-    '&:hover': {
-        cursor: 'pointer',
-      },
   };
 
   const handleSaveClick = () => {
@@ -74,6 +77,20 @@ const Kategorien = () => {
     console.log('Kategorie gespeichert:', category);
     setShowForm(false);
     setCategory('');
+  };
+
+  const handleDeleteButton = (kategorie) => {
+        if (user) {
+          updateDoc(userDocRef, {
+            kategorien: aktuelleKategorien.filter(k => k !== kategorie),
+          })
+          .then(() => {
+            console.log('Document successfully updated with new entry in the map!');
+          })
+          .catch((error) => {
+            console.error('Error updating document:', error);
+          });
+        }
   };
 
   const handleCancelClick = () => {
@@ -109,15 +126,18 @@ const Kategorien = () => {
       )}
 
         <Box {...mainContainerStyles} display={'flex'} alignItems={'center'} justifyContent={'space-around'}>
-            <Typography sx={textStyles} color={'black'} >kategorien</Typography>
+            <Typography sx={textStyles} color={'black'} >Kategorien</Typography>
         </Box>
         <Box {...mainContainerStyles} display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
-            <Typography sx={textStyles} color={'black'}>HardCodedKategorie</Typography>
-            <IconButton style={deleteButtonStylesAusgabe}>
-              <DeleteIcon/>
-            </IconButton>
+            {aktuelleKategorien.map(kategorie => (
+                <Box key={kategorie}>
+                    <Typography sx={textStyles} color={'black'}>{kategorie}</Typography>
+                    <IconButton style={deleteButtonStylesAusgabe} onClick={() => handleDeleteButton(kategorie)}>
+                        <DeleteIcon />
+                    </IconButton>
+                </Box>
+                ))}
         </Box>
-
     </Box>
   );
 };
